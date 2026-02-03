@@ -1,0 +1,41 @@
+# EPA Configuration - Binary Localization with LSTM
+# Enhanced Protein Augmentation with Policy Search
+
+output_dir: ~/EPA_output/
+
+dataset:
+  class: BinaryLocalization
+  train_path: /home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets/subcellular_localization_2/subcellular_localization_2_train.lmdb
+  valid_path: /home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets/subcellular_localization_2/subcellular_localization_2_valid.lmdb
+  test_path: /home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets/subcellular_localization_2/subcellular_localization_2_test.lmdb
+
+model:
+  class: LSTM
+  embed_dim: 64
+  hidden_dim: 128
+  num_classes: 2
+
+criterion: ce
+metrics: ["acc", "mcc"]
+eval_metric: accuracy
+
+optimizer:
+  class: Adam
+  lr: 1.0e-3
+
+device:
+  gpus: [0]
+
+train:
+  batch_size: 32
+  num_epoch: 75  # Only used if EPA search is disabled
+
+# EPA Policy Search Configuration
+epa:
+  search: true              # Enable policy search
+  baseline_epochs: 10       # Baseline training epochs (no augmentation)
+  finetune_num: 10          # Number of random policies to try
+  finetune_epoch: 3         # Fine-tuning epochs per policy
+  num_subpolicy: 4          # Sub-policies per policy
+  num_op: 2                 # Operations per sub-policy
+

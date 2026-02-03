@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyTorch
+*.pth
+*.pt
+
+# Data files
+*.lmdb
+*.mdb
+
+# Logs
+*.log
+*.txt
+benchmark_log_*.txt
+log.txt
+test_output.txt
+test_benchmark_output.txt
+FINAL_TEST.txt
+
+# Results
+benchmark_results_*.json
+benchmark_intermediate_*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output directories
+*_output/
+EPA_output/
