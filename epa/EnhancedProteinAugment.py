@@ -30,7 +30,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
 from metrics import accuracy as compute_accuracy, mcc as compute_mcc
 
 # Dataset paths
-DATASET_BASE = "/home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets"
+DATASET_BASE = "/home/hor20kud/aug/EPA/datasets/"
 
 # Amino acids
 AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"

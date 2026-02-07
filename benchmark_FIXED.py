@@ -50,10 +50,13 @@ class LMDBDataset(Dataset):
 
 def collate_fn(batch):
     sequences, labels = zip(*batch)
-    max_len = max(len(s) for s in sequences)
+    # Limit max sequence length to prevent OOM with augmentations that insert
+    MAX_SEQ_LEN = 2000
+    max_len = min(max(len(s) for s in sequences), MAX_SEQ_LEN)
     padded_seqs = torch.zeros(len(sequences), max_len, dtype=torch.long)
     for i, seq in enumerate(sequences):
-        padded_seqs[i, :len(seq)] = seq
+        seq_len = min(len(seq), max_len)
+        padded_seqs[i, :seq_len] = seq[:seq_len]
     return padded_seqs, torch.stack(labels)
 
 class LSTMModel(nn.Module):
@@ -110,9 +113,11 @@ def train_with_aug(aug_name, aug_fn, magnitude, config, device, epochs=30):
     valid_ds = LMDBDataset(config.dataset.valid_path)
     test_ds = LMDBDataset(config.dataset.test_path)
     
-    train_loader = DataLoader(train_ds, batch_size=64, shuffle=True, collate_fn=collate_fn, num_workers=0)
-    valid_loader = DataLoader(valid_ds, batch_size=64, shuffle=False, collate_fn=collate_fn, num_workers=0)
-    test_loader = DataLoader(test_ds, batch_size=64, shuffle=False, collate_fn=collate_fn, num_workers=0)
+    # Conservative batch size to handle variable-length augmented sequences
+    # num_workers=0 due to LMDB limitations with multiprocessing
+    train_loader = DataLoader(train_ds, batch_size=64, shuffle=True, collate_fn=collate_fn, num_workers=0, pin_memory=True)
+    valid_loader = DataLoader(valid_ds, batch_size=64, shuffle=False, collate_fn=collate_fn, num_workers=0, pin_memory=True)
+    test_loader = DataLoader(test_ds, batch_size=64, shuffle=False, collate_fn=collate_fn, num_workers=0, pin_memory=True)
     
     model = LSTMModel().to(device)
     criterion = nn.CrossEntropyLoss()
@@ -131,6 +136,11 @@ def train_with_aug(aug_name, aug_fn, magnitude, config, device, epochs=30):
     model.load_state_dict(best_state)
     test_acc, test_mcc = evaluate(model, test_loader, device)
     print(f"✅ {aug_name}: Valid={best_valid_acc:.4f}, Test={test_acc:.4f}, MCC={test_mcc:.4f}")
+    
+    # Clear GPU memory after each augmentation training
+    del model, criterion, optimizer, train_loader, valid_loader, test_loader
+    del train_ds, valid_ds, test_ds
+    torch.cuda.empty_cache()
     
     return {'augmentation': aug_name, 'magnitude': magnitude, 'best_valid_acc': best_valid_acc, 'test_acc': test_acc, 'test_mcc': test_mcc}
 

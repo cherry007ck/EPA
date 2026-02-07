@@ -5,9 +5,9 @@ output_dir: ~/EPA_output/
 
 dataset:
   class: BinaryLocalization
-  train_path: /home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets/subcellular_localization_2/subcellular_localization_2_train.lmdb
-  valid_path: /home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets/subcellular_localization_2/subcellular_localization_2_valid.lmdb
-  test_path: /home/luffy/dsa_project/merged/protein_augmentation/protein_augmentation/datasets/subcellular_localization_2/subcellular_localization_2_test.lmdb
+  train_path: /home/hor20kud/aug/EPA/datasets/subcellular_localization_2/subcellular_localization_2_train.lmdb
+  valid_path: /home/hor20kud/aug/EPA/datasets/subcellular_localization_2/subcellular_localization_2_valid.lmdb
+  test_path: /home/hor20kud/aug/EPA/datasets/subcellular_localization_2/subcellular_localization_2_test.lmdb
 
 model:
   class: LSTM
