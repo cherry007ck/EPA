@@ -23,6 +23,9 @@ build/
 # Data files
 *.lmdb
 *.mdb
+*.tar.gz
+*.zip
+._*
 
 # Logs
 *.log

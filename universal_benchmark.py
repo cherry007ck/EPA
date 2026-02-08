@@ -16,6 +16,7 @@ import json
 from datetime import datetime
 from tqdm import tqdm
 from sklearn.metrics import matthews_corrcoef
+from scipy.stats import spearmanr
 
 # Import our flexible dataset handler
 from flexible_dataset import FlexibleLMDBDataset, get_collate_fn
@@ -72,41 +73,90 @@ class PPIModel(nn.Module):
             return self.fc(self.dropout(x.mean(dim=1)))
 
 
-def train_epoch(model, loader, criterion, optimizer, device, is_ppi=False):
-    model.train()
-    total_loss, correct, total = 0, 0, 0
+class RegressionModel(nn.Module):
+    """LSTM model for regression tasks (single output value)"""
+    def __init__(self, embed_dim=128, hidden_dim=256):
+        super().__init__()
+        self.embedding = nn.Embedding(21, embed_dim, padding_idx=0)
+        self.lstm = nn.LSTM(embed_dim, hidden_dim, 2, batch_first=True, bidirectional=True)
+        self.fc = nn.Linear(hidden_dim * 2, 1)  # Single output for regression
+        self.dropout = nn.Dropout(0.3)
     
-    for batch in tqdm(loader, desc="Training", leave=False):
-        if is_ppi:
-            (seqs1, seqs2), labels = batch
-            seqs1, seqs2 = seqs1.to(device), seqs2.to(device)
-            labels = labels.to(device)
-            outputs = model((seqs1, seqs2))
-        else:
+    def forward(self, x):
+        x = self.embedding(x)
+        x, _ = self.lstm(x)
+        return self.fc(self.dropout(x.mean(dim=1))).squeeze(-1)  # Return shape: (batch_size,)
+
+
+class ResidueLSTMModel(nn.Module):
+    """LSTM model for per-residue classification"""
+    def __init__(self, num_classes=3, embed_dim=128, hidden_dim=256):
+        super().__init__()
+        self.embedding = nn.Embedding(21, embed_dim, padding_idx=0)
+        self.lstm = nn.LSTM(embed_dim, hidden_dim, 2, batch_first=True, bidirectional=True)
+        self.fc = nn.Linear(hidden_dim * 2, num_classes)
+        self.dropout = nn.Dropout(0.3)
+    
+    def forward(self, x):
+        x = self.embedding(x)
+        x, _ = self.lstm(x)  # (batch, seq_len, hidden_dim*2)
+        return self.fc(self.dropout(x))  # (batch, seq_len, num_classes)
+
+
+def train_epoch(model, loader, criterion, optimizer, device, is_ppi=False, task_type='classification'):
+    model.train()
+    total_loss = 0
+    
+    if task_type == 'regression':
+        # Regression: track loss only
+        for batch in tqdm(loader, desc="Training", leave=False):
             seqs, labels = batch
             seqs, labels = seqs.to(device), labels.to(device)
             outputs = model(seqs)
+            
+            optimizer.zero_grad()
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            
+            total_loss += loss.item()
         
-        optimizer.zero_grad()
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+        return total_loss / len(loader), 0.0  # Return 0 for accuracy placeholder
+    
+    elif task_type == 'residue_classification':
+        # Residue-level classification with masking
+        correct, total = 0, 0
+        for batch in tqdm(loader, desc="Training", leave=False):
+            seqs, (labels, masks) = batch
+            seqs, labels, masks = seqs.to(device), labels.to(device), masks.to(device)
+            outputs = model(seqs)  # (batch, seq_len, num_classes)
+            
+            # Reshape for loss calculation
+            outputs_flat = outputs.view(-1, outputs.size(-1))  # (batch*seq_len, num_classes)
+            labels_flat = labels.view(-1)  # (batch*seq_len,)
+            masks_flat = masks.view(-1)  # (batch*seq_len,)
+            
+            # Apply mask
+            outputs_masked = outputs_flat[masks_flat]
+            labels_masked = labels_flat[masks_flat]
+            
+            optimizer.zero_grad()
+            loss = criterion(outputs_masked, labels_masked)
+            loss.backward()
+            optimizer.step()
+            
+            total_loss += loss.item()
+            _, predicted = outputs_masked.max(1)
+            correct += predicted.eq(labels_masked).sum().item()
+            total += labels_masked.size(0)
         
-        total_loss += loss.item()
-        _, predicted = outputs.max(1)
-        correct += predicted.eq(labels).sum().item()
-        total += labels.size(0)
+        return total_loss / len(loader), correct / total if total > 0 else 0.0
     
-    return total_loss / len(loader), correct / total
-
-
-def evaluate(model, loader, device, is_ppi=False):
-    model.eval()
-    correct, total = 0, 0
-    all_preds, all_labels = [], []
-    
-    with torch.no_grad():
-        for batch in tqdm(loader, desc="Evaluating", leave=False):
+    else:
+        # Standard classification or PPI
+        correct, total = 0, 0
+        
+        for batch in tqdm(loader, desc="Training", leave=False):
             if is_ppi:
                 (seqs1, seqs2), labels = batch
                 seqs1, seqs2 = seqs1.to(device), seqs2.to(device)
@@ -117,15 +167,95 @@ def evaluate(model, loader, device, is_ppi=False):
                 seqs, labels = seqs.to(device), labels.to(device)
                 outputs = model(seqs)
             
+            optimizer.zero_grad()
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            
+            total_loss += loss.item()
             _, predicted = outputs.max(1)
             correct += predicted.eq(labels).sum().item()
             total += labels.size(0)
-            all_preds.extend(predicted.cpu().numpy())
-            all_labels.extend(labels.cpu().numpy())
+        
+        return total_loss / len(loader), correct / total
+
+
+def evaluate(model, loader, device, is_ppi=False, task_type='classification'):
+    model.eval()
     
-    acc = correct / total
-    mcc = matthews_corrcoef(all_labels, all_preds) if len(set(all_labels)) > 1 else 0.0
-    return acc, mcc
+    if task_type == 'regression':
+        # Regression: compute Spearman correlation
+        all_preds, all_labels = [], []
+        
+        with torch.no_grad():
+            for batch in tqdm(loader, desc="Evaluating", leave=False):
+                seqs, labels = batch
+                seqs, labels = seqs.to(device), labels.to(device)
+                outputs = model(seqs)
+                
+                all_preds.extend(outputs.cpu().numpy())
+                all_labels.extend(labels.cpu().numpy())
+        
+        # Compute Spearman correlation
+        spearman, _ = spearmanr(all_labels, all_preds)
+        return spearman, 0.0  # Return spearman as "accuracy", 0 for MCC
+    
+    elif task_type == 'residue_classification':
+        # Residue-level classification with masking
+        correct, total = 0, 0
+        all_preds, all_labels = [], []
+        
+        with torch.no_grad():
+            for batch in tqdm(loader, desc="Evaluating", leave=False):
+                seqs, (labels, masks) = batch
+                seqs, labels, masks = seqs.to(device), labels.to(device), masks.to(device)
+                outputs = model(seqs)
+                
+                # Flatten and mask
+                outputs_flat = outputs.view(-1, outputs.size(-1))
+                labels_flat = labels.view(-1)
+                masks_flat = masks.view(-1)
+                
+                outputs_masked = outputs_flat[masks_flat]
+                labels_masked = labels_flat[masks_flat]
+                
+                _, predicted = outputs_masked.max(1)
+                correct += predicted.eq(labels_masked).sum().item()
+                total += labels_masked.size(0)
+                
+                all_preds.extend(predicted.cpu().numpy())
+                all_labels.extend(labels_masked.cpu().numpy())
+        
+        acc = correct / total if total > 0 else 0.0
+        mcc = matthews_corrcoef(all_labels, all_preds) if len(set(all_labels)) > 1 else 0.0
+        return acc, mcc
+    
+    else:
+        # Standard classification or PPI
+        correct, total = 0, 0
+        all_preds, all_labels = [], []
+        
+        with torch.no_grad():
+            for batch in tqdm(loader, desc="Evaluating", leave=False):
+                if is_ppi:
+                    (seqs1, seqs2), labels = batch
+                    seqs1, seqs2 = seqs1.to(device), seqs2.to(device)
+                    labels = labels.to(device)
+                    outputs = model((seqs1, seqs2))
+                else:
+                    seqs, labels = batch
+                    seqs, labels = seqs.to(device), labels.to(device)
+                    outputs = model(seqs)
+                
+                _, predicted = outputs.max(1)
+                correct += predicted.eq(labels).sum().item()
+                total += labels.size(0)
+                all_preds.extend(predicted.cpu().numpy())
+                all_labels.extend(labels.cpu().numpy())
+        
+        acc = correct / total
+        mcc = matthews_corrcoef(all_labels, all_preds) if len(set(all_labels)) > 1 else 0.0
+        return acc, mcc
 
 
 def train_with_augmentation(dataset_name, aug_name, aug_fn, magnitude, device, epochs=30, batch_size=64):
@@ -135,6 +265,7 @@ def train_with_augmentation(dataset_name, aug_name, aug_fn, magnitude, device, e
     # Get dataset config
     config = get_dataset_config(dataset_name)
     is_ppi = not config['has_single_sequence']
+    task_type = config.get('task_type', 'classification')
     
     # Augmentation function
     def augment(seq):
@@ -155,45 +286,62 @@ def train_with_augmentation(dataset_name, aug_name, aug_fn, magnitude, device, e
     test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False,
                             collate_fn=collate, num_workers=0, pin_memory=True)
     
-    # Create model
-    if is_ppi:
+    # Create model based on task type
+    if task_type == 'regression':
+        model = RegressionModel().to(device)
+        criterion = nn.MSELoss()
+    elif task_type == 'residue_classification':
+        model = ResidueLSTMModel(num_classes=config['num_classes']).to(device)
+        criterion = nn.CrossEntropyLoss()
+    elif is_ppi:
         model = PPIModel(num_classes=config['num_classes']).to(device)
+        criterion = nn.CrossEntropyLoss()
     else:
         model = LSTMModel(num_classes=config['num_classes']).to(device)
+        criterion = nn.CrossEntropyLoss()
     
-    criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     
-    best_valid_acc, best_state = 0, None
+    best_valid_metric, best_state = -float('inf'), None
     
     # Training loop
     for epoch in range(epochs):
-        train_loss, train_acc = train_epoch(model, train_loader, criterion, optimizer, device, is_ppi)
-        valid_acc, valid_mcc = evaluate(model, valid_loader, device, is_ppi)
+        train_loss, train_acc = train_epoch(model, train_loader, criterion, optimizer, device, is_ppi, task_type)
+        valid_metric, valid_mcc = evaluate(model, valid_loader, device, is_ppi, task_type)
         
-        print(f"Epoch {epoch+1}/{epochs}: Loss={train_loss:.4f}, Train={train_acc:.4f}, Valid={valid_acc:.4f}, MCC={valid_mcc:.4f}")
+        # For regression, valid_metric is Spearman correlation; for classification, it's accuracy
+        metric_name = 'Spearman' if task_type == 'regression' else 'Acc'
+        print(f"Epoch {epoch+1}/{epochs}: Loss={train_loss:.4f}, Train={train_acc:.4f}, Valid {metric_name}={valid_metric:.4f}, MCC={valid_mcc:.4f}")
         
-        if valid_acc > best_valid_acc:
-            best_valid_acc = valid_acc
+        if valid_metric > best_valid_metric:
+            best_valid_metric = valid_metric
             best_state = model.state_dict().copy()
     
     # Test with best model
     model.load_state_dict(best_state)
-    test_acc, test_mcc = evaluate(model, test_loader, device, is_ppi)
-    print(f"✅ {aug_name}: Valid={best_valid_acc:.4f}, Test={test_acc:.4f}, MCC={test_mcc:.4f}")
+    test_metric, test_mcc = evaluate(model, test_loader, device, is_ppi, task_type)
+    print(f"✅ {aug_name}: Valid {metric_name}={best_valid_metric:.4f}, Test {metric_name}={test_metric:.4f}, MCC={test_mcc:.4f}")
     
     # Clear GPU memory
     del model, criterion, optimizer, train_loader, valid_loader, test_loader
     del train_ds, valid_ds, test_ds
     torch.cuda.empty_cache()
     
-    return {
+    # Return results with appropriate metric names
+    result = {
         'augmentation': aug_name,
         'magnitude': magnitude,
-        'best_valid_acc': best_valid_acc,
-        'test_acc': test_acc,
         'test_mcc': test_mcc
     }
+    
+    if task_type == 'regression':
+        result['best_valid_spearman'] = best_valid_metric
+        result['test_spearman'] = test_metric
+    else:
+        result['best_valid_acc'] = best_valid_metric
+        result['test_acc'] = test_metric
+    
+    return result
 
 
 def main():
@@ -261,10 +409,19 @@ def main():
     print(f"{'='*70}\n")
     
     # Print summary
-    print("Top 5 Augmentations by Test Accuracy:")
-    sorted_results = sorted(results, key=lambda x: x['test_acc'], reverse=True)
-    for i, r in enumerate(sorted_results[:5], 1):
-        print(f"  {i}. {r['augmentation']:20s} - Test Acc: {r['test_acc']:.4f}, MCC: {r['test_mcc']:.4f}")
+    config = get_dataset_config(args.dataset)
+    task_type = config.get('task_type', 'classification')
+    
+    if task_type == 'regression':
+        print("Top 5 Augmentations by Test Spearman Correlation:")
+        sorted_results = sorted(results, key=lambda x: x.get('test_spearman', -1), reverse=True)
+        for i, r in enumerate(sorted_results[:5], 1):
+            print(f"  {i}. {r['augmentation']:20s} - Test Spearman: {r.get('test_spearman', 0):.4f}")
+    else:
+        print("Top 5 Augmentations by Test Accuracy:")
+        sorted_results = sorted(results, key=lambda x: x.get('test_acc', 0), reverse=True)
+        for i, r in enumerate(sorted_results[:5], 1):
+            print(f"  {i}. {r['augmentation']:20s} - Test Acc: {r.get('test_acc', 0):.4f}, MCC: {r['test_mcc']:.4f}")
 
 
 if __name__ == "__main__":

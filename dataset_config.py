@@ -81,6 +81,60 @@ DATASET_CONFIGS = {
         'sequence_field': ['primary_1', 'primary_2'],  # Two sequences
         'has_single_sequence': False,
     },
+    
+    'beta_lactamase': {
+        'name': 'Beta-Lactamase Fitness (Regression)',
+        'base_dir': 'datasets/beta_lactamase',
+        'train_file': 'beta_lactamase_train.lmdb',
+        'valid_file': 'beta_lactamase_valid.lmdb',
+        'test_file': 'beta_lactamase_test.lmdb',
+        'num_classes': 1,  # Regression task
+        'task_type': 'regression',
+        'label_field': 'scaled_effect1',
+        'sequence_field': 'primary',
+        'has_single_sequence': True,
+        'metric': 'spearman',  # Use Spearman correlation
+    },
+    
+    'secondary_structure': {
+        'name': 'Secondary Structure Prediction (3-class per residue)',
+        'base_dir': 'datasets/secondary_structure',
+        'train_file': 'secondary_structure_train.lmdb',
+        'valid_file': 'secondary_structure_valid.lmdb',
+        'test_file': 'secondary_structure_casp12.lmdb',  # Use CASP12 as main test
+        'num_classes': 3,  # 3 secondary structure classes (helix, sheet, coil)
+        'task_type': 'residue_classification',
+        'label_field': 'ss3',
+        'mask_field': 'valid_mask',
+        'sequence_field': 'primary',
+        'has_single_sequence': True,
+    },
+    
+    'human_ppi': {
+        'name': 'Human Protein-Protein Interaction',
+        'base_dir': 'datasets/human_ppi',
+        'train_file': 'human_ppi_train.lmdb',
+        'valid_file': 'human_ppi_valid.lmdb',
+        'test_file': 'human_ppi_test.lmdb',
+        'num_classes': 2,
+        'task_type': 'classification',
+        'label_field': 'interaction',
+        'sequence_field': ['primary_1', 'primary_2'],  # Two sequences
+        'has_single_sequence': False,
+    },
+    
+    'solubility': {
+        'name': 'Protein Solubility Prediction',
+        'base_dir': 'datasets/solubility',
+        'train_file': 'solubility_train.lmdb',
+        'valid_file': 'solubility_valid.lmdb',
+        'test_file': 'solubility_test.lmdb',
+        'num_classes': 2,
+        'task_type': 'classification',
+        'label_field': 'solubility',
+        'sequence_field': 'primary',
+        'has_single_sequence': True,
+    },
 }
 
 

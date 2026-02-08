@@ -8,6 +8,7 @@ import os
 import torch
 import lmdb
 import pickle
+import numpy as np
 from torch.utils.data import Dataset
 from dataset_config import get_dataset_config
 
@@ -87,10 +88,34 @@ class FlexibleLMDBDataset(Dataset):
             # Encode both sequences
             seq_tensor = [self.encode_sequence(seq) for seq in sequences]
         
-        # Extract label
-        label = int(data[self.config['label_field']])
+        # Extract label based on task type
+        task_type = self.config.get('task_type', 'classification')
         
-        return seq_tensor, torch.tensor(label, dtype=torch.long)
+        if task_type == 'regression':
+            # Regression tasks: return float label
+            label = float(data[self.config['label_field']])
+            return seq_tensor, torch.tensor(label, dtype=torch.float)
+        
+        elif task_type == 'residue_classification':
+            # Residue-level classification: return per-residue labels and mask
+            label_array = data[self.config['label_field']]  # numpy array of residue labels
+            
+            # Get valid mask if available
+            if 'valid_mask' in data:
+                valid_mask = data['valid_mask']
+            else:
+                valid_mask = np.ones_like(label_array, dtype=bool)
+            
+            # Convert to tensors
+            label_tensor = torch.from_numpy(label_array).long()
+            mask_tensor = torch.from_numpy(valid_mask).bool()
+            
+            return seq_tensor, (label_tensor, mask_tensor)
+        
+        else:
+            # Standard classification: return integer label
+            label = int(data[self.config['label_field']])
+            return seq_tensor, torch.tensor(label, dtype=torch.long)
     
     def encode_sequence(self, sequence):
         """Encode amino acid sequence to tensor"""
@@ -108,10 +133,37 @@ def get_collate_fn(dataset_name):
     """
     config = get_dataset_config(dataset_name)
     
-    if config['has_single_sequence']:
+    task_type = config.get('task_type', 'classification')
+    
+    if task_type == 'residue_classification':
+        return collate_fn_residue
+    elif config['has_single_sequence']:
         return collate_fn_single_sequence
     else:
         return collate_fn_ppi
+
+
+def collate_fn_residue(batch):
+    """Collate function for residue-level classification datasets"""
+    sequences, label_data = zip(*batch)
+    labels, masks = zip(*label_data)
+    
+    # Limit max sequence length
+    MAX_SEQ_LEN = 2000
+    max_len = min(max(len(s) for s in sequences), MAX_SEQ_LEN)
+    
+    # Pad sequences
+    padded_seqs = torch.zeros(len(sequences), max_len, dtype=torch.long)
+    padded_labels = torch.zeros(len(sequences), max_len, dtype=torch.long)
+    padded_masks = torch.zeros(len(sequences), max_len, dtype=torch.bool)
+    
+    for i, (seq, label, mask) in enumerate(zip(sequences, labels, masks)):
+        seq_len = min(len(seq), max_len)
+        padded_seqs[i, :seq_len] = seq[:seq_len]
+        padded_labels[i, :seq_len] = label[:seq_len]
+        padded_masks[i, :seq_len] = mask[:seq_len]
+    
+    return padded_seqs, (padded_labels, padded_masks)
 
 
 def collate_fn_single_sequence(batch):
