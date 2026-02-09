@@ -1,0 +1,75 @@
+{
+  "config": {
+    "model_type": "resnet",
+    "dataset_name": "solubility",
+    "augmentations": [
+      "baseline",
+      "random_delete"
+    ],
+    "epochs": 30,
+    "batch_size": 64,
+    "n_jobs": -1,
+    "use_subset": true,
+    "subset_size": 1000,
+    "output_dir": "benchmark_results",
+    "device": "cuda",
+    "strategy": "online_augmentation"
+  },
+  "dataset_config": {
+    "name": "Protein Solubility Prediction",
+    "base_dir": "datasets/solubility",
+    "train_file": "solubility_train.lmdb",
+    "valid_file": "solubility_valid.lmdb",
+    "test_file": "solubility_test.lmdb",
+    "num_classes": 2,
+    "task_type": "classification",
+    "label_field": "solubility",
+    "sequence_field": "primary",
+    "has_single_sequence": true
+  },
+  "model_config": {
+    "name": "ResNet for Proteins",
+    "type": "deep_learning",
+    "requires_gpu": true,
+    "supports_tasks": [
+      "classification",
+      "regression",
+      "residue_classification"
+    ],
+    "supports_ppi": true,
+    "supports_augmentation": true,
+    "default_params": {
+      "embed_dim": 128,
+      "channels": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "num_blocks": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "dropout": 0.3
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.658,
+      "test_acc": 0.654
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.656,
+      "test_acc": 0.576
+    }
+  ],
+  "timestamp": "2026-02-08T17:12:54.415661"
+}

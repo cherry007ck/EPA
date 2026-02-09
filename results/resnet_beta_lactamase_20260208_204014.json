@@ -1,0 +1,229 @@
+{
+  "model_type": "resnet",
+  "dataset_name": "beta_lactamase",
+  "config": {
+    "model": {
+      "type": "resnet",
+      "architecture": "ProteinResNetRegression",
+      "parameters": {
+        "embed_dim": 128,
+        "channels": [
+          64,
+          128,
+          256,
+          512
+        ],
+        "num_blocks": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "dropout": 0.3
+      }
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "weight_decay": 0.0001,
+      "gradient_clip": 1.0,
+      "patience": 10,
+      "min_delta": 0.0001
+    },
+    "augmentation": {
+      "strategy": "online",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "beta_lactamase",
+      "task_type": "regression",
+      "num_classes": 1,
+      "metric": "spearman",
+      "secondary_metric": "mse"
+    },
+    "compute": {
+      "device": "cuda",
+      "num_workers": 4,
+      "pin_memory": true,
+      "mixed_precision": true
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.757555646641896,
+      "test_spearman": 0.7444429248571248
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.18052453068821409,
+      "test_spearman": 0.032474860466729934
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.37113326352810994,
+      "test_spearman": 0.19679597576835617
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2682073278216874,
+      "test_spearman": 0.1714501855641943
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.12303762643844492,
+      "test_spearman": -0.06518316811428922
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.1148141040873396,
+      "test_spearman": -0.07145723045617942
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.7215359571907247,
+      "test_spearman": 0.688297057273259
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.1226238700566589,
+      "test_spearman": 0.10112247572007636
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2339537388674571,
+      "test_spearman": 0.15390564560770018
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.11219672435435224,
+      "test_spearman": 0.057650624648373366
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2717429612161902,
+      "test_spearman": 0.1611377869948854
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.69335304514091,
+      "test_spearman": 0.705568500692082
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.7512805919703779,
+      "test_spearman": 0.7353541513206968
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.3740008028942616,
+      "test_spearman": 0.3218965090497236
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.7496662115584634,
+      "test_spearman": 0.7397339083490003
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.4752100728094337,
+      "test_spearman": 0.4071690320392624
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.48160698957850984,
+      "test_spearman": 0.46671054802991396
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.44316892751057047,
+      "test_spearman": 0.3617390696274449
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.12976026906934823,
+      "test_spearman": 0.02548191593681342
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.35807913128596497,
+      "test_spearman": 0.37316390950930467
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.5316159134359391,
+      "test_spearman": 0.5562721562746517
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.35446373603523823,
+      "test_spearman": 0.34336672939741214
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.3546868270902575,
+      "test_spearman": 0.39611106824828207
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.33421633105975723,
+      "test_spearman": 0.39675849242329886
+    }
+  ],
+  "timestamp": "20260208_204014"
+}

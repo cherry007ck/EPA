@@ -1,0 +1,36 @@
+model:
+  type: lstm
+  architecture: LSTMModel
+  parameters:
+    embed_dim: 128
+    hidden_dim: 256
+    num_layers: 2
+    dropout: 0.3
+    bidirectional: true
+training:
+  epochs: 30
+  batch_size: 64
+  learning_rate: 0.001
+  optimizer: adam
+  weight_decay: 0.0
+  gradient_clip: 1.0
+  patience: 10
+  min_delta: 0.0001
+augmentation:
+  strategy: online
+  all_augmentations: true
+dataset:
+  name: subcellular_localization
+  task_type: classification
+  num_classes: 10
+  metric: accuracy
+  secondary_metric: mcc
+compute:
+  device: cuda
+  num_workers: 4
+  pin_memory: true
+  mixed_precision: false
+output:
+  save_model: true
+  save_best_only: true
+  log_interval: 100

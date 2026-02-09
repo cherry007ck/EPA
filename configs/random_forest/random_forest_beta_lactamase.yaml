@@ -1,0 +1,30 @@
+model:
+  type: random_forest
+  architecture: RandomForestModel
+  parameters:
+    n_estimators: 100
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+    n_jobs: -1
+    random_state: 42
+training:
+  epochs: 1
+  max_samples: null
+  feature_type: aa_composition
+augmentation:
+  strategy: offline
+  all_augmentations: true
+dataset:
+  name: beta_lactamase
+  task_type: regression
+  num_classes: 1
+  metric: spearman
+  secondary_metric: mse
+compute:
+  device: cpu
+  n_jobs: -1
+output:
+  save_model: true
+  save_best_only: true
+  log_interval: 100

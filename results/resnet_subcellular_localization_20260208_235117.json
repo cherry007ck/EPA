@@ -1,0 +1,229 @@
+{
+  "model_type": "resnet",
+  "dataset_name": "subcellular_localization",
+  "config": {
+    "model": {
+      "type": "resnet",
+      "architecture": "ProteinResNet",
+      "parameters": {
+        "embed_dim": 128,
+        "channels": [
+          64,
+          128,
+          256,
+          512
+        ],
+        "num_blocks": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "dropout": 0.3
+      }
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "weight_decay": 0.0001,
+      "gradient_clip": 1.0,
+      "patience": 10,
+      "min_delta": 0.0001
+    },
+    "augmentation": {
+      "strategy": "online",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "subcellular_localization",
+      "task_type": "classification",
+      "num_classes": 10,
+      "metric": "accuracy",
+      "secondary_metric": "mcc"
+    },
+    "compute": {
+      "device": "cuda",
+      "num_workers": 4,
+      "pin_memory": true,
+      "mixed_precision": true
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.632515119174671,
+      "test_acc": 0.578434908041832
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6752045535396656,
+      "test_acc": 0.6581319870176704
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6769832799715404,
+      "test_acc": 0.6617381896862604
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6677339025257916,
+      "test_acc": 0.6282005048683736
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6712913553895411,
+      "test_acc": 0.6606563288856834
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6182853077196727,
+      "test_acc": 0.5690587811034981
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6609747420846673,
+      "test_acc": 0.5842048323115759
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.4503735325506937,
+      "test_acc": 0.34980165885322756
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6595517609391676,
+      "test_acc": 0.6404615939415795
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.664532194948417,
+      "test_acc": 0.6491164803461954
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6595517609391676,
+      "test_acc": 0.6058420483231157
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6606189967982924,
+      "test_acc": 0.5943021997836279
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6492351476342938,
+      "test_acc": 0.5935809592499098
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6673781572394166,
+      "test_acc": 0.6033177064551027
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6513696193525436,
+      "test_acc": 0.5798773891092679
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6648879402347919,
+      "test_acc": 0.6195456184637577
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6527926004980434,
+      "test_acc": 0.6108907320591417
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6542155816435432,
+      "test_acc": 0.6004327443202307
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6819637139807898,
+      "test_acc": 0.6639019112874144
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6734258271077909,
+      "test_acc": 0.6108907320591417
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6623977232301672,
+      "test_acc": 0.6119725928597187
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6495908929206688,
+      "test_acc": 0.5863685539127299
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6574172892209178,
+      "test_acc": 0.5852866931121529
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6734258271077909,
+      "test_acc": 0.6390191128741435
+    }
+  ],
+  "timestamp": "20260208_235117"
+}
