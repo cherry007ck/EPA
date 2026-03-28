@@ -1,0 +1,220 @@
+{
+  "model_type": "lstm",
+  "dataset_name": "beta_lactamase",
+  "config": {
+    "model": {
+      "type": "lstm",
+      "architecture": "RegressionModel",
+      "parameters": {
+        "embed_dim": 128,
+        "hidden_dim": 256,
+        "num_layers": 2,
+        "dropout": 0.3,
+        "bidirectional": true
+      }
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "weight_decay": 0.0,
+      "gradient_clip": 1.0,
+      "patience": 10,
+      "min_delta": 0.0001
+    },
+    "augmentation": {
+      "strategy": "online",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "beta_lactamase",
+      "task_type": "regression",
+      "num_classes": 1,
+      "metric": "spearman",
+      "secondary_metric": "mse"
+    },
+    "compute": {
+      "device": "cuda",
+      "num_workers": 4,
+      "pin_memory": true,
+      "mixed_precision": false
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.30105289337378577,
+      "test_spearman": 0.3308853442473852
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.232902205271055,
+      "test_spearman": 0.27064943391747576
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.256973453362129,
+      "test_spearman": 0.2912732928747489
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2255014502922916,
+      "test_spearman": 0.27367386474537814
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2620679023965291,
+      "test_spearman": 0.2625514820078036
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.22413052039998435,
+      "test_spearman": 0.28828218308117615
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2881422389074384,
+      "test_spearman": 0.3504621943774121
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.22766860163161914,
+      "test_spearman": 0.28448408588431645
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.30100957451348376,
+      "test_spearman": 0.348363321979286
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.25572495533669015,
+      "test_spearman": 0.3045037590544109
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.2714565224513133,
+      "test_spearman": 0.2970663513091432
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.29287324970023054,
+      "test_spearman": 0.3268069389265822
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.26716204718446174,
+      "test_spearman": 0.3091997347233467
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.21575495692451466,
+      "test_spearman": 0.2821720118607311
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.3165673165535108,
+      "test_spearman": 0.3376807377469049
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.26102542324174616,
+      "test_spearman": 0.3006592466288792
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.26839957822772836,
+      "test_spearman": 0.3070110017175585
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.21731200706505624,
+      "test_spearman": 0.2743670006439983
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.23644217600946776,
+      "test_spearman": 0.3026091448327783
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.24094356601082292,
+      "test_spearman": 0.2596670105201003
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.25420655537058584,
+      "test_spearman": 0.30978678421232125
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.1876654580574215,
+      "test_spearman": 0.26021328557702805
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.24188589963523754,
+      "test_spearman": 0.30428471097687554
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_mcc": 0.0,
+      "best_valid_spearman": 0.24388325884899104,
+      "test_spearman": 0.2575593992184043
+    }
+  ],
+  "timestamp": "20260209_234403"
+}

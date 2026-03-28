@@ -1,0 +1,220 @@
+{
+  "model_type": "lstm",
+  "dataset_name": "subcellular_localization_2",
+  "config": {
+    "model": {
+      "type": "lstm",
+      "architecture": "LSTMModel",
+      "parameters": {
+        "embed_dim": 128,
+        "hidden_dim": 256,
+        "num_layers": 2,
+        "dropout": 0.3,
+        "bidirectional": true
+      }
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "weight_decay": 0.0,
+      "gradient_clip": 1.0,
+      "patience": 10,
+      "min_delta": 0.0001
+    },
+    "augmentation": {
+      "strategy": "online",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "subcellular_localization_2",
+      "task_type": "classification",
+      "num_classes": 2,
+      "metric": "accuracy",
+      "secondary_metric": "mcc"
+    },
+    "compute": {
+      "device": "cuda",
+      "num_workers": 4,
+      "pin_memory": true,
+      "mixed_precision": false
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9045691150954309,
+      "test_acc": 0.8599199542595769
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8999421631000578,
+      "test_acc": 0.8627787307032591
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8935801041064199,
+      "test_acc": 0.8759291023441966
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.891844997108155,
+      "test_acc": 0.8656375071469411
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9034123770965876,
+      "test_acc": 0.8542024013722127
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8924233661075767,
+      "test_acc": 0.8387650085763293
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9057258530942741,
+      "test_acc": 0.8770726129216695
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8201272411798728,
+      "test_acc": 0.7478559176672385
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8930017351069983,
+      "test_acc": 0.8502001143510578
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8924233661075767,
+      "test_acc": 0.8656375071469411
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8993637941006362,
+      "test_acc": 0.8684962835906233
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8993637941006362,
+      "test_acc": 0.869639794168096
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8947368421052632,
+      "test_acc": 0.8564894225271584
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9063042220936958,
+      "test_acc": 0.8850771869639794
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8976286871023713,
+      "test_acc": 0.8702115494568324
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9080393290919607,
+      "test_acc": 0.873642081189251
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9103528050896472,
+      "test_acc": 0.8684962835906233
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8901098901098901,
+      "test_acc": 0.8730703259005146
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.896471949103528,
+      "test_acc": 0.8839336763865066
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9045691150954309,
+      "test_acc": 0.8930817610062893
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.8993637941006362,
+      "test_acc": 0.8770726129216695
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9057258530942741,
+      "test_acc": 0.888507718696398
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9063042220936958,
+      "test_acc": 0.8862206975414523
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.9063042220936958,
+      "test_acc": 0.8959405374499714
+    }
+  ],
+  "timestamp": "20260210_022352"
+}
