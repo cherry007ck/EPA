@@ -20,12 +20,13 @@ build/
 *.pth
 *.pt
 
-# Data files
+# Data files (datasets are large, download separately)
 *.lmdb
 *.mdb
 *.tar.gz
 *.zip
 ._*
+datasets/
 
 # Logs
 *.log
