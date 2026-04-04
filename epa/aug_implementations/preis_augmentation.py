@@ -178,7 +178,7 @@ def preis_augment(sequence: List[str], intensity: float) -> List[str]:
         Returns original sequence if augmentation fails or sequence is too short
         
     Example:
-        >>> seq = ['M', 'E', 'T', 'H', 'I', 'O', 'N', 'I', 'N', 'E']
+        >>> seq = ['M', 'E', 'T', 'H', 'I', 'N', 'I', 'N', 'E']
         >>> aug_seq = preis_augment(seq, 0.5)
         >>> # aug_seq will have segments swapped and tokens shuffled
         >>> # but will contain the same amino acids in different order

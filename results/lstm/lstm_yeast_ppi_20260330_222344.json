@@ -1,0 +1,220 @@
+{
+  "model_type": "lstm",
+  "dataset_name": "yeast_ppi",
+  "config": {
+    "model": {
+      "type": "lstm",
+      "architecture": "PPIModel",
+      "parameters": {
+        "embed_dim": 128,
+        "hidden_dim": 256,
+        "num_layers": 2,
+        "dropout": 0.3,
+        "bidirectional": true
+      }
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "weight_decay": 0.0,
+      "gradient_clip": 1.0,
+      "patience": 10,
+      "min_delta": 0.0001
+    },
+    "augmentation": {
+      "strategy": "online",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "yeast_ppi",
+      "task_type": "classification",
+      "num_classes": 2,
+      "metric": "accuracy",
+      "secondary_metric": "mcc"
+    },
+    "compute": {
+      "device": "cuda",
+      "num_workers": 4,
+      "pin_memory": true,
+      "mixed_precision": false
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5050761421319797
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5786802030456852
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6,
+      "test_acc": 0.6015228426395939
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6,
+      "test_acc": 0.5888324873096447
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6,
+      "test_acc": 0.5609137055837563
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5609137055837563
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5684210526315789,
+      "test_acc": 0.5406091370558376
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6,
+      "test_acc": 0.5786802030456852
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5228426395939086
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5684210526315789,
+      "test_acc": 0.5253807106598984
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6105263157894737,
+      "test_acc": 0.5228426395939086
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5789473684210527,
+      "test_acc": 0.5431472081218274
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5532994923857868
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5380710659898477
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5684210526315789,
+      "test_acc": 0.565989847715736
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6105263157894737,
+      "test_acc": 0.5482233502538071
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5789473684210527,
+      "test_acc": 0.5786802030456852
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5578947368421052,
+      "test_acc": 0.5710659898477157
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5684210526315789,
+      "test_acc": 0.5812182741116751
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5894736842105263,
+      "test_acc": 0.5482233502538071
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.6,
+      "test_acc": 0.5761421319796954
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5789473684210527,
+      "test_acc": 0.5685279187817259
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.5578947368421052,
+      "test_acc": 0.5532994923857868
+    }
+  ],
+  "timestamp": "20260330_222344"
+}

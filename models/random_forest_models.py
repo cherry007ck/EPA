@@ -97,8 +97,8 @@ class RandomForestModel:
     def prepare_features(self, sequences, is_ppi=False):
         """Extract and scale features from sequences"""
         if is_ppi:
-            # For PPI: concatenate features from both sequences
-            seqs1, seqs2 = sequences
+            # sequences is a list of (seq1, seq2) tuples — unzip into two lists
+            seqs1, seqs2 = zip(*sequences)
             feat1 = self.feature_extractor.extract_features(seqs1)
             feat2 = self.feature_extractor.extract_features(seqs2)
             features = np.concatenate([feat1, feat2], axis=1)

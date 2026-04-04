@@ -254,10 +254,10 @@ def nana_augment(
         Returns original sequence if augmentation fails
         
     Example:
-        >>> seq = ['M', 'E', 'T', 'H', 'I', 'O', 'N', 'I', 'N', 'E']
+        >>> seq = ['M', 'E', 'T', 'H', 'I', 'N', 'I', 'N', 'E']
         >>> aug_seq = nana_augment(seq, 0.3)
-        >>> # Might produce: ['M', 'D', 'S', 'H', 'L', 'O', 'N', 'V', 'N', 'D']
-        >>> # E→D (both negative), T→S (both polar), I→L/V (both hydrophobic)
+        >>> # Might produce: ['M', 'D', 'S', 'H', 'L', 'N', 'V', 'N', 'D']
+        >>> # E->D (both negative), T->S (both polar), I->L/V (both hydrophobic)
         
     Reference:
         Paper: "NaNa and MiGu: Semantic Data Augmentation Techniques to 

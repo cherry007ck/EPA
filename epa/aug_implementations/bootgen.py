@@ -362,7 +362,7 @@ def bootgen_augment(
         Returns original sequence if augmentation fails
         
     Example:
-        >>> seq = ['M', 'E', 'T', 'H', 'I', 'O', 'N', 'I', 'N', 'E']
+        >>> seq = ['M', 'E', 'T', 'H', 'I', 'N', 'I', 'N', 'E']
         >>> aug_seq = bootgen_augment(seq, 0.3)
         >>> # Returns a high-quality augmented variant with conservative substitutions
         

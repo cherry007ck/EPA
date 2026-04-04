@@ -1,0 +1,229 @@
+{
+  "model_type": "resnet",
+  "dataset_name": "remote_homology_fold",
+  "config": {
+    "model": {
+      "type": "resnet",
+      "architecture": "ProteinResNet",
+      "parameters": {
+        "embed_dim": 128,
+        "channels": [
+          64,
+          128,
+          256,
+          512
+        ],
+        "num_blocks": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "dropout": 0.3
+      }
+    },
+    "training": {
+      "epochs": 30,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "optimizer": "adam",
+      "weight_decay": 0.0001,
+      "gradient_clip": 1.0,
+      "patience": 10,
+      "min_delta": 0.0001
+    },
+    "augmentation": {
+      "strategy": "online",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "remote_homology_fold",
+      "task_type": "classification",
+      "num_classes": 1195,
+      "metric": "accuracy",
+      "secondary_metric": "mcc"
+    },
+    "compute": {
+      "device": "cuda",
+      "num_workers": 4,
+      "pin_memory": true,
+      "mixed_precision": true
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.125,
+      "test_acc": 0.11420612813370473
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.12364130434782608,
+      "test_acc": 0.1392757660167131
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.12635869565217392,
+      "test_acc": 0.10167130919220056
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.11548913043478261,
+      "test_acc": 0.10167130919220056
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.10190217391304347,
+      "test_acc": 0.08356545961002786
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.10054347826086957,
+      "test_acc": 0.052924791086350974
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.14266304347826086,
+      "test_acc": 0.11281337047353761
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.08152173913043478,
+      "test_acc": 0.0766016713091922
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.12092391304347826,
+      "test_acc": 0.11142061281337047
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.09646739130434782,
+      "test_acc": 0.09749303621169916
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.11684782608695653,
+      "test_acc": 0.10445682451253482
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.14266304347826086,
+      "test_acc": 0.11838440111420613
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.13043478260869565,
+      "test_acc": 0.10584958217270195
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.12771739130434784,
+      "test_acc": 0.11002785515320335
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.11820652173913043,
+      "test_acc": 0.11142061281337047
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.1453804347826087,
+      "test_acc": 0.12952646239554316
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.13994565217391305,
+      "test_acc": 0.11559888579387187
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.14673913043478262,
+      "test_acc": 0.11420612813370473
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.13858695652173914,
+      "test_acc": 0.12116991643454039
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.13858695652173914,
+      "test_acc": 0.11142061281337047
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.1453804347826087,
+      "test_acc": 0.11559888579387187
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.12364130434782608,
+      "test_acc": 0.10863509749303621
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.11684782608695653,
+      "test_acc": 0.0905292479108635
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_mcc": 1.0,
+      "best_valid_acc": 0.13994565217391305,
+      "test_acc": 0.11420612813370473
+    }
+  ],
+  "timestamp": "20260331_151257"
+}

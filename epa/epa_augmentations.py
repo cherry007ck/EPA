@@ -1,13 +1,28 @@
-"""EPA augmentations - direct imports from protein_augmentation"""
-import sys
-import os
+"""
+EPA Augmentations Module
 
-# Add protein_augmentation to path
-sys.path.insert(0, '/home/EPA/epa')
+Central hub for all protein sequence augmentation techniques.
+Provides 23 augmentation operations across three levels:
+  - Token-level (7): insert, substitute, swap, delete, mask, conservative mask/substitute
+  - Sequence-level (8): crop, shuffle, reverse, cut, subsequence, repeat expand/contract, back-translation
+  - Semantic-level (8): NTA, BootGen, RSA, PreIS, NaNa, MiGu, IMAEN, Spider
+
+Reference:
+    Sun et al. (2024) "Enhancing Protein Predictive Models via Proteins
+    Data Augmentation: A Benchmark and New Directions"
+"""
+
+import os
+import sys
+
+# Use relative path based on this file's location (portable across environments)
+_current_dir = os.path.dirname(os.path.abspath(__file__))
+if _current_dir not in sys.path:
+    sys.path.insert(0, _current_dir)
 
 # Import all research augmentations
 from aug_implementations.nta_augmentation import nucleotide_augment
-from aug_implementations.residue_masking import mask_residues, conservative_mask_residues  
+from aug_implementations.residue_masking import mask_residues, conservative_mask_residues
 from aug_implementations.bootgen import bootgen_augment
 from aug_implementations.spider_augmentation import spider_augment
 from aug_implementations.rsa_augmentation import rsa_augment

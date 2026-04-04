@@ -263,7 +263,7 @@ def imaen_augment(
         Returns original sequence if augmentation fails
     
     Example:
-        >>> seq = ['M', 'E', 'T', 'H', 'I', 'O', 'N', 'I', 'N', 'E']
+        >>> seq = ['M', 'E', 'T', 'H', 'I', 'N', 'I', 'N', 'E']
         >>> aug_seq = imaen_augment(seq, intensity=0.3)
         >>> # aug_seq will have ~30% of positions substituted with
         >>> # biochemically similar amino acids

@@ -1,0 +1,214 @@
+{
+  "model_type": "random_forest",
+  "dataset_name": "beta_lactamase",
+  "config": {
+    "model": {
+      "type": "random_forest",
+      "architecture": "RandomForestModel",
+      "parameters": {
+        "n_estimators": 100,
+        "max_depth": null,
+        "min_samples_split": 2,
+        "min_samples_leaf": 1,
+        "n_jobs": -1,
+        "random_state": 42
+      }
+    },
+    "training": {
+      "epochs": 1,
+      "max_samples": null,
+      "feature_type": "aa_composition"
+    },
+    "augmentation": {
+      "strategy": "offline",
+      "all_augmentations": true
+    },
+    "dataset": {
+      "name": "beta_lactamase",
+      "task_type": "regression",
+      "num_classes": 1,
+      "metric": "spearman",
+      "secondary_metric": "mse"
+    },
+    "compute": {
+      "device": "cpu",
+      "n_jobs": -1
+    },
+    "output": {
+      "save_model": true,
+      "save_best_only": true,
+      "log_interval": 100
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_insert",
+      "magnitude": 0.25,
+      "test_spearman": -0.027935140790927477,
+      "best_valid_spearman": -0.027935140790927477,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_substitute",
+      "magnitude": 0.25,
+      "test_spearman": 0.0017332684335211945,
+      "best_valid_spearman": 0.0017332684335211945,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_swap",
+      "magnitude": 0.25,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_spearman": 0.09592061347081,
+      "best_valid_spearman": 0.09592061347081,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_crop",
+      "magnitude": 0.7,
+      "test_spearman": 0.012262959896496263,
+      "best_valid_spearman": 0.012262959896496263,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_shuffle",
+      "magnitude": 0.25,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "global_reverse",
+      "magnitude": 0.0,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_cut",
+      "magnitude": 0.6,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "random_subsequence",
+      "magnitude": 0.6,
+      "test_spearman": 0.020451372673028063,
+      "best_valid_spearman": 0.020451372673028063,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "back_translation_substitute",
+      "magnitude": 0.25,
+      "test_spearman": 0.10081989454060918,
+      "best_valid_spearman": 0.10081989454060918,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "repeat_expansion",
+      "magnitude": 0.5,
+      "test_spearman": 0.39492380970466445,
+      "best_valid_spearman": 0.39492380970466445,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "repeat_contraction",
+      "magnitude": 0.5,
+      "test_spearman": 0.42055881463126144,
+      "best_valid_spearman": 0.42055881463126144,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "conservative_substitute",
+      "magnitude": 0.25,
+      "test_spearman": 0.1883964746141311,
+      "best_valid_spearman": 0.1883964746141311,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "nucleotide_augment",
+      "magnitude": 0.25,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "mask_residues",
+      "magnitude": 0.15,
+      "test_spearman": 0.03966444042728627,
+      "best_valid_spearman": 0.03966444042728627,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "conservative_mask_residues",
+      "magnitude": 0.15,
+      "test_spearman": 0.2838566256480134,
+      "best_valid_spearman": 0.2838566256480134,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "bootgen_augment",
+      "magnitude": 0.25,
+      "test_spearman": 0.2522785166897815,
+      "best_valid_spearman": 0.2522785166897815,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "spider_augment",
+      "magnitude": 0.25,
+      "test_spearman": -0.12661381352263631,
+      "best_valid_spearman": -0.12661381352263631,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "rsa_augment",
+      "magnitude": 0.25,
+      "test_spearman": 0.14303914298120737,
+      "best_valid_spearman": 0.14303914298120737,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "preis_augment",
+      "magnitude": 0.25,
+      "test_spearman": 0.428425572450419,
+      "best_valid_spearman": 0.428425572450419,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "nana_augment",
+      "magnitude": 0.25,
+      "test_spearman": 0.18467863676093726,
+      "best_valid_spearman": 0.18467863676093726,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "migu_augment",
+      "magnitude": 0.25,
+      "test_spearman": 0.23964962865317502,
+      "best_valid_spearman": 0.23964962865317502,
+      "test_mcc": 0.0
+    },
+    {
+      "augmentation": "imaen_simple",
+      "magnitude": 0.25,
+      "test_spearman": 0.11440286433105741,
+      "best_valid_spearman": 0.11440286433105741,
+      "test_mcc": 0.0
+    }
+  ],
+  "timestamp": "20260330_141821"
+}

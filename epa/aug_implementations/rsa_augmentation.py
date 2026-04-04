@@ -120,7 +120,7 @@ def rsa_augment(sequence: List[str], intensity: float) -> List[str]:
         A conservatively mutated sequence (same format as input)
         
     Example:
-        >>> seq = ['M', 'E', 'T', 'H', 'I', 'O', 'N', 'I', 'N', 'E']
+        >>> seq = ['M', 'E', 'T', 'H', 'I', 'N', 'I', 'N', 'E']
         >>> aug_seq = rsa_augment(seq, 0.3)
         >>> # Approximately 30% of residues will be conservatively mutated
         >>> # L->I (both hydrophobic), E->D (both negative), etc.

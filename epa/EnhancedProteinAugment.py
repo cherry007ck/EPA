@@ -20,17 +20,37 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
-# Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+# Add epa package directory to path for imports
+_epa_dir = os.path.dirname(os.path.abspath(__file__))
+if _epa_dir not in sys.path:
+    sys.path.insert(0, _epa_dir)
+
 from epa_augmentations import augment_list, apply_augment
 from util import load_config, get_root_logger, create_working_directory
 
-# Add metrics
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
-from metrics import accuracy as compute_accuracy, mcc as compute_mcc
+# Metrics - inline implementation to avoid external dependency
+from sklearn.metrics import matthews_corrcoef, accuracy_score
 
-# Dataset paths
-DATASET_BASE = "/home/hor20kud/aug/EPA/datasets/"
+
+def compute_accuracy(predictions, targets):
+    """Compute accuracy from model outputs."""
+    if hasattr(predictions, 'argmax'):
+        preds = predictions.argmax(dim=1).cpu().numpy()
+    else:
+        preds = predictions.cpu().numpy()
+    return accuracy_score(targets.cpu().numpy(), preds)
+
+
+def compute_mcc(predictions, targets):
+    """Compute Matthews Correlation Coefficient from model outputs."""
+    if hasattr(predictions, 'argmax'):
+        preds = predictions.argmax(dim=1).cpu().numpy()
+    else:
+        preds = predictions.cpu().numpy()
+    return matthews_corrcoef(targets.cpu().numpy(), preds)
+
+# Dataset paths (relative to project root)
+DATASET_BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "datasets")
 
 # Amino acids
 AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"

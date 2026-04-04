@@ -1,0 +1,66 @@
+{
+  "config": {
+    "model_type": "random_forest",
+    "dataset_name": "solubility",
+    "augmentations": [
+      "baseline",
+      "random_delete"
+    ],
+    "epochs": 30,
+    "batch_size": 64,
+    "n_jobs": -1,
+    "use_subset": true,
+    "subset_size": 1000,
+    "output_dir": "benchmark_results",
+    "device": "cuda",
+    "strategy": "offline_augmentation"
+  },
+  "dataset_config": {
+    "name": "Protein Solubility Prediction",
+    "base_dir": "datasets/solubility",
+    "train_file": "solubility_train.lmdb",
+    "valid_file": "solubility_valid.lmdb",
+    "test_file": "solubility_test.lmdb",
+    "num_classes": 2,
+    "task_type": "classification",
+    "label_field": "solubility",
+    "sequence_field": "primary",
+    "has_single_sequence": true
+  },
+  "model_config": {
+    "name": "Random Forest",
+    "type": "traditional_ml",
+    "requires_gpu": false,
+    "supports_tasks": [
+      "classification",
+      "regression"
+    ],
+    "supports_ppi": true,
+    "supports_augmentation": false,
+    "default_params": {
+      "n_estimators": 100,
+      "max_depth": null,
+      "min_samples_split": 2,
+      "min_samples_leaf": 1,
+      "n_jobs": -1,
+      "random_state": 42
+    }
+  },
+  "results": [
+    {
+      "augmentation": "baseline",
+      "magnitude": 0.0,
+      "test_acc": 0.73,
+      "best_valid_acc": 0.73,
+      "test_mcc": 0.06289721351921584
+    },
+    {
+      "augmentation": "random_delete",
+      "magnitude": 0.25,
+      "test_acc": 0.758,
+      "best_valid_acc": 0.758,
+      "test_mcc": 0.12575528532203228
+    }
+  ],
+  "timestamp": "2026-02-08T17:05:39.965926"
+}

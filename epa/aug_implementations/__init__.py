@@ -12,7 +12,7 @@ Available augmentation techniques:
 - RSA: Retrieved Sequence Augmentation (conservative mutations)
 - PreIS: Supervised Data Augmentation (self-mixing)
 - NaNa: Novel Augmentation of New Node Attributes
--MiGu: Molecular Interactions and Geometric Upgrading
+- MiGu: Molecular Interactions and Geometric Upgrading
 - IMAEN: Interpretable Molecular Augmentation
 """
 

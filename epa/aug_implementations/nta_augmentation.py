@@ -291,7 +291,7 @@ def nucleotide_augment(sequence: List[str], substitution_rate: float) -> List[st
         Returns original sequence if augmentation fails
         
     Example:
-        >>> seq = ['M', 'E', 'T', 'H', 'I', 'O', 'N', 'I', 'N', 'E']
+        >>> seq = ['M', 'E', 'T', 'H', 'I', 'N', 'I', 'N', 'E']
         >>> aug_seq = nucleotide_augment(seq, 0.3)
         >>> # aug_seq should be the same amino acids, but derived from
         >>> # different synonymous codons at the nucleotide level
