@@ -301,7 +301,7 @@ def search_best_policy(cfg, baseline_model_path, train_loader, valid_loader, log
         if val_acc > best_score:
             best_score = val_acc
             best_policy = policy
-            logger.info(f"✅ New best! Acc = {best_score:.4f}")
+            logger.info(f"New best! Acc = {best_score:.4f}")
     
     logger.info("\n" + "="*80)
     logger.info(f"Search Complete! Best Score: {best_score:.4f}")
@@ -388,7 +388,7 @@ def main():
             torch.save(model.state_dict(), os.path.join(output_dir, "baseline_best.pt"))
     
     logger.info("")
-    logger.info(f"✅ Baseline Best: Epoch {best_epoch}, Val Acc = {best_val_acc:.4f}")
+    logger.info(f"Baseline Best: Epoch {best_epoch}, Val Acc = {best_val_acc:.4f}")
 
     
     # Phase 2: Policy search

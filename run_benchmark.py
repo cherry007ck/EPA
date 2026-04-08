@@ -84,25 +84,25 @@ class ProductionBenchmarkRunner:
     def _print_config(self):
         """Print configuration summary"""
         print(f"\n{'='*80}")
-        print(f"🚀 PRODUCTION BENCHMARK RUNNER")
+        print(f"PRODUCTION BENCHMARK RUNNER")
         print(f"{'='*80}")
-        print(f"📋 Model:        {self.model_cfg['name']} ({self.model_type})")
-        print(f"📊 Dataset:      {self.dataset_cfg['name']}")
-        print(f"🎯 Task:         {self.dataset_cfg['task_type']}")
-        print(f"📈 Metric:       {self.config['dataset']['metric']}")
-        
+        print(f"Model:        {self.model_cfg['name']} ({self.model_type})")
+        print(f"Dataset:      {self.dataset_cfg['name']}")
+        print(f"Task:         {self.dataset_cfg['task_type']}")
+        print(f"Metric:       {self.config['dataset']['metric']}")
+
         training_cfg = self.config['training']
-        print(f"\n⚙️  Training Configuration:")
+        print(f"\nTraining Configuration:")
         print(f"   Epochs:       {training_cfg.get('epochs', 'N/A')}")
         print(f"   Batch Size:   {training_cfg.get('batch_size', 'N/A')}")
         print(f"   Learning Rate: {training_cfg.get('learning_rate', 'N/A')}")
         print(f"   Optimizer:    {training_cfg.get('optimizer', 'N/A')}")
         
         aug_cfg = self.config['augmentation']
-        print(f"\n🔄 Augmentation Strategy: {aug_cfg['strategy']}")
-        
+        print(f"\nAugmentation Strategy: {aug_cfg['strategy']}")
+
         compute_cfg = self.config['compute']
-        print(f"\n💻 Compute:")
+        print(f"\nCompute:")
         print(f"   Device:       {compute_cfg.get('device', 'cpu')}")
         if 'num_workers' in compute_cfg:
             print(f"   Workers:      {compute_cfg['num_workers']}")
@@ -236,7 +236,7 @@ class ProductionBenchmarkRunner:
             json.dump(results_data, f, indent=2)
         
         print(f"\n{'='*70}")
-        print(f"✅ Results saved to: {filepath}")
+        print(f"Results saved to: {filepath}")
         print(f"{'='*70}\n")
         
         return str(filepath)
@@ -282,7 +282,7 @@ def main():
     
     # Print summary
     print(f"\n{'='*70}")
-    print(f"✅ Benchmark Complete!")
+    print(f"Benchmark Complete!")
     print(f"{'='*70}")
     print(f"Total runs: {len(results)}")
     

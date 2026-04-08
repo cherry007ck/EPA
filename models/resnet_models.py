@@ -390,4 +390,4 @@ if __name__ == "__main__":
     print(f"   Parameters: {sum(p.numel() for p in model_res.parameters()):,}")
     
     print("\n" + "="*70)
-    print("✅ All ResNet models working correctly!")
+    print("All ResNet models working correctly.")

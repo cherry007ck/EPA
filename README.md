@@ -136,7 +136,7 @@ EPA/
 | `conservative_mask_residues` | Semantic masking within biochemical groups |
 | `conservative_substitute` | Replace with biochemically similar amino acids |
 
-### Sequence-Level (8)
+### Sequence-Level (7)
 | Method | Description |
 |--------|-------------|
 | `random_crop` | Subsequence selection |
@@ -146,9 +146,8 @@ EPA/
 | `random_subsequence` | Non-contiguous selection |
 | `repeat_expansion` | Pattern duplication |
 | `repeat_contraction` | Pattern removal |
-| `back_translation_substitute` | mRNA-level mutation via codon back-translation |
 
-### Semantic-Level (8)
+### Semantic-Level (9)
 | Method | Source Paper | Description |
 |--------|-------------|-------------|
 | `nucleotide_augment` | Minot & Reddy 2022 | Synonymous codon substitution via NTA |
@@ -159,6 +158,7 @@ EPA/
 | `migu_augment` | NaNa/MiGu paper | Context-aware with interaction preservation |
 | `imaen_simple` | IMAEN | Interpretable property-based augmentation |
 | `spider_augment` | Spider NT paper | Random substitution + insertion |
+| `back_translation_substitute` | mRNA-level mutation via codon back-translation |
 
 ---
 

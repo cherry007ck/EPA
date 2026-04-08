@@ -61,7 +61,7 @@ class TraditionalMLTrainer:
         )
         
         rf_model.fit(X_train, y_train, is_ppi=self.is_ppi)
-        print("✓ Training complete")
+        print("Training complete")
         
         # Evaluate
         print("Evaluating...")
@@ -69,7 +69,7 @@ class TraditionalMLTrainer:
         
         if self.task_type == 'regression':
             spearman, _ = spearmanr(y_test, y_pred)
-            print(f"✅ {augmentation_name}: Test Spearman={spearman:.4f}")
+            print(f"{augmentation_name}: Test Spearman={spearman:.4f}")
             
             result = {
                 'augmentation': augmentation_name,
@@ -81,7 +81,7 @@ class TraditionalMLTrainer:
         else:
             accuracy = accuracy_score(y_test, y_pred)
             mcc = matthews_corrcoef(y_test, y_pred) if len(set(y_test)) > 1 else 0.0
-            print(f"✅ {augmentation_name}: Test Acc={accuracy:.4f}, MCC={mcc:.4f}")
+            print(f"{augmentation_name}: Test Acc={accuracy:.4f}, MCC={mcc:.4f}")
             
             result = {
                 'augmentation': augmentation_name,

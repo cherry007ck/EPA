@@ -58,7 +58,7 @@ if [[ "${1:-}" == "--individual" ]]; then
         JOB_ID=$(sbatch "$SCRIPT" | awk '{print $4}')
         JOB_IDS+=("$JOB_ID")
         JOB_NAMES+=("$DS")
-        echo "  ✓  ${DS}  →  Job ID ${JOB_ID}"
+        echo "  ${DS} -> Job ID ${JOB_ID}"
     done
 
 # ── Option A: job array (default) ────────────────────────────────────────────
@@ -66,8 +66,8 @@ else
     echo -e "\nSubmitting RF job array (6 tasks, one per dataset)...\n"
     ARRAY_OUTPUT=$(sbatch scripts/slurm/rf_all_array.sbatch)
     ARRAY_JOB_ID=$(echo "$ARRAY_OUTPUT" | awk '{print $4}')
-    echo "  ✓  Array job submitted  →  Job ID ${ARRAY_JOB_ID}"
-    echo "     Tasks: ${ARRAY_JOB_ID}_0 … ${ARRAY_JOB_ID}_5"
+    echo "  Array job submitted -> Job ID ${ARRAY_JOB_ID}"
+    echo "     Tasks: ${ARRAY_JOB_ID}_0 ... ${ARRAY_JOB_ID}_5"
     for i in "${!DATASETS[@]}"; do
         JOB_IDS+=("${ARRAY_JOB_ID}_${i}")
         JOB_NAMES+=("${DATASETS[$i]}")

@@ -236,4 +236,4 @@ if __name__ == "__main__":
     seqs, label = ds3[0]
     print(f"  Sample 0: seq1 length={len(seqs[0])}, seq2 length={len(seqs[1])}, label={label}")
     
-    print("\n✅ All tests passed!")
+    print("\nAll tests passed.")

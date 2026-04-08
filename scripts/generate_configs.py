@@ -236,7 +236,7 @@ def generate_all_configs(output_dir='configs'):
     skipped_count = 0
     
     for model_type in models:
-        print(f"\n📋 {model_type.upper()}:")
+        print(f"\n{model_type.upper()}:")
         
         # Create model subdirectory
         model_dir = output_path / model_type
@@ -245,7 +245,7 @@ def generate_all_configs(output_dir='configs'):
         for dataset_name, dataset_info in DATASETS.items():
             # Skip RF for residue-level tasks
             if model_type == 'random_forest' and dataset_info['task_type'] == 'residue_classification':
-                print(f"   ⏭️  {dataset_name} (not supported)")
+                print(f"   - {dataset_name} (not supported)")
                 skipped_count += 1
                 continue
             
@@ -258,14 +258,14 @@ def generate_all_configs(output_dir='configs'):
             with open(filepath, 'w') as f:
                 yaml.dump(config, f, default_flow_style=False, sort_keys=False)
             
-            print(f"   ✓ {dataset_name}")
+            print(f"   - {dataset_name}")
             generated_count += 1
-    
+
     print("\n" + "="*70)
-    print(f"✅ Generated {generated_count} configuration files")
-    print(f"⏭️  Skipped {skipped_count} incompatible combinations")
-    print(f"📁 Location: {output_path.absolute()}")
-    print(f"📂 Organized in subdirectories: lstm/, random_forest/, resnet/")
+    print(f"Generated {generated_count} configuration files")
+    print(f"Skipped {skipped_count} incompatible combinations")
+    print(f"Location: {output_path.absolute()}")
+    print(f"Organized in subdirectories: lstm/, random_forest/, resnet/")
     print("="*70 + "\n")
 
 

@@ -1,6 +1,6 @@
-# EPA Benchmark System - Production Grade
+# EPA Benchmark System
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Activate environment
@@ -16,14 +16,14 @@ python config_loader.py --list
 python test_config_system.py
 ```
 
-## 📋 System Overview
+## System Overview
 
-Production-grade benchmarking system with **23 YAML configurations** for **3 models** across **8 datasets**.
+Benchmarking system with 23 YAML configurations for 3 models across 8 datasets.
 
 ### Models
-- **LSTM** (500K params): Online augmentation, bidirectional, 2-layer
-- **Random Forest** (feature-based): Offline augmentation, 25 features
-- **ResNet** (1-4M params): Online augmentation, 4 stages
+- LSTM (~500K params): Online augmentation, bidirectional, 2-layer
+- Random Forest (feature-based): Offline augmentation, 25 features
+- ResNet (1-4M params): Online augmentation, 4 stages
 
 ### Datasets
 1. `subcellular_localization_2` - Binary classification (2 classes)
@@ -35,7 +35,7 @@ Production-grade benchmarking system with **23 YAML configurations** for **3 mod
 7. `human_ppi` - Large PPI dataset (35K samples)
 8. `solubility` - Binary classification (62K samples)
 
-## 📁 File Structure
+## File Structure
 
 ```
 aug/EPA/
@@ -60,29 +60,17 @@ aug/EPA/
 └── CONFIGURATION_SYSTEM.md          # Full documentation
 ```
 
-## 🎯 Key Features
+## Features
 
-### ✅ Production-Grade Quality
-- **Modular Architecture**: Separate models, trainers, configs
-- **YAML Configuration**: All parameters externalized
-- **Validation**: Automatic validation on load
-- **Caching**: 3x speedup for repeated loads
-- **Error Handling**: Clear error messages
-- **Testing**: Comprehensive test suite
+- Modular architecture separating models, trainers, and configs
+- YAML-based configuration with validation on load
+- CLI overrides for quick experimentation
+- Model and dataset registries
+- Online and offline augmentation strategies
+- Fixed seeds for reproducibility
+- Automatic JSON result saving
 
-### ✅ Flexibility
-- **CLI Overrides**: Quick experimentation without editing files
-- **Model Registry**: Easy to add new models
-- **Dataset Registry**: Easy to add new datasets
-- **Augmentation Strategies**: Online/offline strategies
-
-### ✅ Reproducibility
-- **Version Controlled**: All configs tracked in git
-- **Fixed Seeds**: Reproducible random numbers
-- **Comprehensive Logging**: Detailed training logs
-- **Result Saving**: Automatic JSON result files
-
-## 📊 Configuration Examples
+## Configuration Examples
 
 ### LSTM Configuration
 ```yaml
@@ -130,7 +118,7 @@ training:
   weight_decay: 0.0001
 ```
 
-## 🔧 Usage Examples
+## Usage Examples
 
 ### Basic Usage
 
@@ -179,44 +167,10 @@ python config_loader.py --load resnet yeast_ppi
 ### Testing
 
 ```bash
-# Run full test suite
 python test_config_system.py
-
-# Expected output:
-# ✅ 23 configurations found
-# ✅ All configs load successfully
-# ✅ Validation passes
-# ✅ Caching works (3x speedup)
-# ✅ All required fields present
 ```
 
-## 🎓 Results from Completed Benchmarks
-
-### LSTM Results (Already Completed)
-| Dataset | Accuracy | MCC | Status |
-|---------|----------|-----|--------|
-| subcellular_localization_2 | **89.31%** | 0.79 | ✅ Complete |
-| subcellular_localization | **69.13%** | 0.65 | ✅ Complete |
-| yeast_ppi | **60.15%** | 0.20 | ✅ Complete |
-| remote_homology_fold | - | - | 🔄 Running (Job 20807682) |
-| beta_lactamase | - | - | 🔄 Running (Job 20808638) |
-| secondary_structure | - | - | 🔄 Running (Job 20808639) |
-| human_ppi | - | - | 🔄 Running (Job 20808640) |
-| solubility | - | - | 🔄 Running (Job 20808641) |
-
-### Random Forest Results (Tested)
-| Dataset | Performance | Status |
-|---------|-------------|--------|
-| solubility | 77% accuracy | ✅ Tested |
-| beta_lactamase | 0.40 Spearman | ✅ Tested |
-| human_ppi | 49.79% accuracy | ✅ Tested |
-
-### ResNet Results (Tested)
-| Dataset | Performance | Status |
-|---------|-------------|--------|
-| solubility | 65.4% accuracy (CPU) | ✅ Tested |
-
-## 🛠️ SLURM Integration
+## SLURM Integration
 
 ### Running on Cluster
 
@@ -251,7 +205,7 @@ for dataset in subcellular_localization_2 yeast_ppi solubility; do
 done
 ```
 
-## 📈 Performance Metrics
+## Performance Metrics
 
 ### By Model Type
 
@@ -274,7 +228,7 @@ done
 | human_ppi | 35,670 | 32 | 16 |
 | solubility | 62,479 | 32 | 16 |
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Configuration Errors
 
@@ -306,34 +260,14 @@ source epa_venv/bin/activate
 pip list | grep -E 'torch|sklearn|yaml'
 ```
 
-## 📚 Documentation
+## Documentation
 
-- **CONFIGURATION_SYSTEM.md** - Complete configuration guide
-- **model_config.py** - Model registry and capabilities
-- **benchmark_config.py** - Benchmark suite definitions
-- **config_loader.py** - Configuration loader implementation
+- `CONFIGURATION_SYSTEM.md` - Complete configuration guide
+- `model_config.py` - Model registry and capabilities
+- `benchmark_config.py` - Benchmark suite definitions
+- `config_loader.py` - Configuration loader implementation
 
-## 🚦 System Status
-
-### ✅ Completed
-- 23 YAML configuration files created
-- ConfigLoader with validation and caching
-- Production runner with CLI interface
-- Comprehensive test suite
-- 3 LSTM benchmarks completed
-- Random Forest and ResNet tested
-- Full documentation
-
-### 🔄 In Progress
-- 5 LSTM jobs running on cluster
-
-### ⏳ Planned
-- ESM-2 model integration
-- Automated hyperparameter tuning
-- Multi-GPU training support
-- Ensemble methods
-
-## 📞 Quick Reference
+## Quick Reference
 
 ```bash
 # System check
@@ -352,24 +286,3 @@ python run_benchmark.py --model MODEL --dataset DATASET
 python run_benchmark.py --model MODEL --dataset DATASET \
     --epochs N --batch-size N --lr FLOAT
 ```
-
-## 🎉 Summary
-
-**Production-grade configuration system with:**
-- ✅ 23 YAML configurations
-- ✅ 3 models fully implemented
-- ✅ 8 datasets supported
-- ✅ Modular architecture
-- ✅ Comprehensive validation
-- ✅ Complete testing
-- ✅ Full documentation
-
-**Ready for production deployment and cluster execution!**
-
----
-
-**Last Updated**: 2026-02-08  
-**Status**: ✅ Production Ready  
-**Configurations**: 23/23 Created  
-**Models**: 3 Implemented (LSTM, RF, ResNet)  
-**Documentation**: Complete

@@ -148,7 +148,7 @@ class ConfigLoader:
         with open(config_file, 'w') as f:
             yaml.dump(config, f, default_flow_style=False, sort_keys=False)
         
-        print(f"✓ Saved configuration to {config_file}")
+        print(f"Saved configuration to {config_file}")
     
     def list_available_configs(self, model_type: Optional[str] = None) -> List[str]:
         """
@@ -218,9 +218,9 @@ class ConfigLoader:
             if len(parts) == 2:
                 model, dataset = parts
                 if model != current_model:
-                    print(f"\n🔧 {model.upper()}:")
+                    print(f"\n{model.upper()}:")
                     current_model = model
-                print(f"   ✓ {dataset}")
+                print(f"   - {dataset}")
         
         print("="*70 + "\n")
 

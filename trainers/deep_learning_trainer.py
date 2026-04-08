@@ -115,7 +115,7 @@ class DeepLearningTrainer:
         model.load_state_dict(best_state)
         test_metric, test_mcc = self._evaluate(model, test_loader)
         
-        print(f"✅ {augmentation_name}: "
+        print(f"{augmentation_name}: "
               f"Valid {metric_name}={best_valid_metric:.4f}, "
               f"Test {metric_name}={test_metric:.4f}, MCC={test_mcc:.4f}")
         

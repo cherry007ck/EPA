@@ -64,7 +64,7 @@ class BenchmarkRunner:
             self.using_yaml = True
             
             print(f"\n{'='*70}")
-            print(f"✅ Loaded configuration from YAML")
+            print(f"Loaded configuration from YAML")
             print(f"   Model: {model_type}")
             print(f"   Dataset: {dataset_name}")
             print(f"{'='*70}\n")
@@ -77,7 +77,7 @@ class BenchmarkRunner:
             self.using_yaml = False
             
             print(f"\n{'='*70}")
-            print(f"⚠️  Using legacy BenchmarkConfig (consider migrating to YAML)")
+            print(f"Using legacy BenchmarkConfig (consider migrating to YAML)")
             print(f"{'='*70}\n")
         else:
             raise ValueError("Must provide either (model_type, dataset_name) or config")

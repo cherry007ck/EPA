@@ -25,16 +25,16 @@ tasks=(
     "yeast_ppi"
 )
 
-echo -e "\n📋 Submitting 7 ResNet benchmark jobs...\n"
+echo -e "\nSubmitting 7 ResNet benchmark jobs...\n"
 
 # Submit all jobs
 for task in "${tasks[@]}"; do
     echo "Submitting: resnet_${task}"
     job_id=$(sbatch scripts/slurm/resnet_${task}.sbatch 2>&1 | grep -oP 'Submitted batch job \K\d+')
     if [ $? -eq 0 ]; then
-        echo "  ✓ Job ID: $job_id"
+        echo "  Job ID: $job_id"
     else
-        echo "  ✗ Failed to submit"
+        echo "  Failed to submit"
     fi
 done
 
